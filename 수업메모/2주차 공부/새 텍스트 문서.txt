@@ -1,0 +1,6 @@
+docker rm -f $(docker ps -aq) : 프로세스 전체적으로 죽이기
+docker rmi -f $(docker ps -aq) : 이미지 죽이기
+
+
+
+해야하는 것: java를 통해 redis DB로 데이터 연결. 서버 열기까지.

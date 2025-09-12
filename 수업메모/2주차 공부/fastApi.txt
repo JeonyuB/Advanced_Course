@@ -1,0 +1,48 @@
+services:
+  # 1. PostgreSQL 데이터베이스 서비스
+  db:
+    image: postgres:14
+    container_name: my_postgres_db
+    restart: always
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # 2. Django 백엔드 서비스
+  backend:
+    build:
+      context: ./backend
+    container_name: my_backend_app
+    restart: always
+    env_file:
+      - ./.env
+    depends_on:
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             gunicorn config.wsgi:application --bind 0.0.0.0:8000"
+    ports:
+      - "8000:8000"  # ✅ 외부에서 접근 가능하도록 포트 포워딩 추가
+
+  # 3. React 프론트엔드 (Nginx) 서비스
+  frontend:
+    build:
+      context: ./frontend
+    container_name: my_frontend_app
+    restart: always
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
