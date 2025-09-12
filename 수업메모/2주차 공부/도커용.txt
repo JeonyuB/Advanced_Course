@@ -1,0 +1,88 @@
+putty에서
+1) 구글드라이브 
+(https://docs.google.com/presentation/d/1BxzuPk0qqUxmB1s5F1EHnGHAPHY7CI6NXqnfy9qbnUA/edit?slide=id.g3328540908e_0_69#slide=id.g3328540908e_0_69) 에서 
+docker 설치 단계 8번까지 한 후, 
+
+2) webstorm에 dockerfile 생성 후,
+ #Dockerfile
+FROM postgres:14
+
+#기본값(원하면 build 시 박제되지만, 보안상 run 시 -e로 덮어쓰는 것을 권장)
+ENV POSTGRES_DB=mydb
+ENV POSTGRES_USER=je
+ENV POSTGRES_PASSWORD=1111
+ENV TZ=Asia/Seoul
+
+EXPOSE 5432
+#엔트리포인트/커맨드는 postgres 공식 이미지 기본값 사용
+
+내용 입력.
+
+3) 생성된 dockerfile을 fileziller에서 
+호스트: aws 인스턴스 포트번호
+사용자: ubuntu
+키파일: 키페어 주소
+
+로 호스트 만든 뒤, 원격사이트 부분에서
+/home/ubuntu/postgres (postgres라는 폴더 생성) 에 도커파일 붙여넣음.
+
+4) ubuntu putty에서...
+$ cd postgres
+$docker build -t my-postgres:14 .
+$docker images // 이미ㅣㅈ 들어왔는지 확인
+
+$docker run -d \
+  --name my-postgres \
+  -p 5432:5432 \
+  -e POSTGRES_DB=mydb \
+  -e POSTGRES_USER=je \
+  -e POSTGRES_PASSWORD=1111 \
+  -v pgdata:/var/lib/postgresql/data \
+  my-postgres:14
+
+$docker ps -a //확인
+
+
+< 데이터베이스와 서버연결 >
+AWS에서...
+1) 생성된 인스턴스에 보안탭 클릭
+2) 인바운드 규칙의 보안 그룹 들어감> 인바운드 규칙 편집> 인바운드규칙 추가 (유형: Postgres, 포트 범위: 5432, 0.0.0.0/0 으로)
+
+postgres에서...
+3) 데이터 베이스명 : mydb, 
+포트번호: 생성인스턴스 포트번호,
+유저명: 우분투 도커에서 생성한 유저명
+비번: 우분투 도커에서 생성한 비번
+
+4) 테이블 생성
+예시로: 
+create table employees (
+    id serial primary key,
+    name varchar(100),
+    age numeric,
+    job varchar(100),
+    language varchar(100),
+    pay numeric
+);
+
+insert into employees values (1, 'John', 40, 'frontend', 'react', 400)
+
+Pycharm에서...
+5) 
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",   # PostgreSQL 엔진
+        "NAME": "mydb",                      # 데이터베이스 이름
+        "USER": "je",                      # DB 사용자
+        "PASSWORD": "111",                 # 비밀번호
+        "HOST": "15.164.224.206",                         # DB 서버 주소 (원격이면 IP/도메인)
+        "PORT": "5432",                              # 기본 포트
+    }
+}
+
+로 변경.
+
+6) 
+
+
+

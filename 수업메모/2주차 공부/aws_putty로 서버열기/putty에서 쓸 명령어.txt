@@ -1,0 +1,8 @@
+https://docs.google.com/presentation/d/1BxzuPk0qqUxmB1s5F1EHnGHAPHY7CI6NXqnfy9qbnUA/edit?slide=id.g3328540908e_0_58#slide=id.g3328540908e_0_58 
+의 docker 설치 부분 사용.
+
+docker compose up -d --build //서버올림
+docker compose down -v //서버내릴 시
+
+올라온지 확인하는 법: docker ps -a//할때 up이 떠야함.
+그리고 주소창에 ip 주소 적어서 들어가봄

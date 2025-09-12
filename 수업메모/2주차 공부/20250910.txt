@@ -1,0 +1,30 @@
+<오늘의 설치>
+microsoft azure
+filezilla_client
+호스트 생성: 새 사이트로 생성-> 호스트: aws ip
+-> 사용자: ubuntu -> 키파일: key fare 집어넣기
+-> 프로토콜: SFTP-SSH File Transfer Protocol
+
+
+<radis 연장>
+1) 설치항목: pip install SQLAlchemy pandas
+pip install psycopg2-binary
+
+2) import pandas as pd
+from sqlalchemy import create_engine
+
+
+=======================
+도커
+
+도커 명령어
+>ubuntu
+>도커 파일 위치로 이동(ls로 확인)-도커파일 생성은 ws에서 dockerFile 생성으로 생성 가능.(안의 코드는 디코 참고)
+> sudo docker build -t my-postgres:14 .
+
+
+
+
+
+
+

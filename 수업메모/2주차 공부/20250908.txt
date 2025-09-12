@@ -1,0 +1,86 @@
+DML, DCL, DDL 정의(기억하기)
+
+1. DML 여기에 해당하는 쟝고 코드
+
+1) select : 
+# 단일 조건 조회 (filter)
+books = Book.objects.filter(author='홍길동')
+
+# 단일 객체 조회 (get)
+book = Book.objects.get(id=1)
+
+# 전체 조회
+all_books = Book.objects.all()
+
+2) insert :
+# 객체 생성 및 저장
+book = Book(title='파이썬', author='홍길동', published_year=2023)
+book.save()
+
+# 또는 create()로 한 줄에 처리
+book = Book.objects.create(title='파이썬', author='홍길동', published_year=2023)
+
+3) update :
+# 객체를 가져와서 수정 후 저장
+book = Book.objects.get(id=1)
+book.title = '장고'
+book.save()
+
+# 또는 update() 사용
+Book.objects.filter(id=1).update(title='장고')
+
+4) delete :
+# 객체를 가져와서 삭제
+book = Book.objects.get(id=1)
+book.delete()
+
+# 또는 filter로 바로 삭제
+Book.objects.filter(id=1).delete()
+
+
+
+=============================================
+
+react-Redux 라이브러리의 훅의 종류
+
+1) useDispatch: 액션(action)을 보낼 수 있게 해주는 함수. 버튼 클릭 등 이벤트 처리시 사용.
+(ex: dispatch(fetchPostEmployee());)
+
+2) useSelector: Redux store의 state에서 값을 읽어오는 함수. 화면에 Redux 상태 값을 보여줌.
+(ex: const { infos } = useSelector(state => state.employees);)
+
+3) useContext: 전역 데이터(상태, 설정 등)를 모든 컴포넌트에서 공유.
+
+
+
+
+==========================================
+initializr spring
+https://start.spring.io/
+
+설정 그대로하고 
+
+자바버전확인 javac -version(버전은 17 대 버전)
+
+
+jpa는 intelij 로 열기
+
+============================================
+프론트와 자바의 연결방법
+application.properties파일에서 
+server.port=8080 
+
+===========================================
+서버를 분할하는 것도 중요.
+
+ai탑재: django,레디스 등=> 속도 빨라진다는 장점
+로그인 등: 자바
+
+node.js, orm, jpm 등이 많이 쓰임
+
+
+
+
+
+
+

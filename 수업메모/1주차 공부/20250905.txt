@@ -1,0 +1,110 @@
+~저번에 이어서~
+-----
+pycharm에서 
+python .\manage.py createsuperuser
+python .\manage.py runserver(/admin 주소로 가면 admin페이지 이동 가능)
+pip install psycopg2-binary django-cors-headers djangorestframework
+
+----
+ 후에 setting에서
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'app',
+    'rest_framework',
+    'corsheaders'
+]
+
+MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+하기
+----------
+생성한 app폴더에 urls.py 파일 생성
+config 폴더에 존재하는 urls.py에 
+
+from django.contrib import admin
+from django.urls import path, include
+
+#url, uri : request하는 장소
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path("app/", include("app.urls")),
+]
+----------
+후에 app\urls.py
+from django.urls import path
+from . import views
+
+#url, uri : request하는 장소
+urlpatterns = [
+    path("hello/", views.hello, name="hello")
+]
+----------
+후에 같은 위치의 views.py에
+from django.http import HttpRequest, HttpResponse
+from django.shortcuts import render
+
+def index(request):
+    return HttpResponse("Hello World!")
+
+추가.
+----------
+
+만일 안된다면,  python manage.py runserver를 다시해 서버를 연다.
+
+----------
+
+<깔아야할 것>
+postgresql 다운로드(15.어쩌고 버전)
+
+전부 체크
+그후 전부 next로 설치
+
+
+다음에 뜨는 창에, 버전을 postgresql 어쩌고 15. 어쩌고로 되어있는 걸로 선택
+다음으로 하다가 캡쳐본의 것으로 체크 후 설치 완료.
+
+postman 다운로드
+>>postman으로 post, get하며 json으로 데이터 보내고 받아오는 게 가능
+
+----------
+<mongoDB 식 문법>-python 식
+def employees(request):
+    if request.method == 'GET':
+        infos =  Employee.objects.all() //get방식으로 받음
+    return Response(infos) //json으로 반환
+
+<기존 sql 문법>
+select * 
+from employees
+
+
+----------------------
+app에 serializers.py 추가
+
+안에 
+
+--------------------
+
+주의점: 
+get(url)
+post(url, {}) 형식으로, url은 닫고 받는 데이터 키값은 object,string에 따져서 잘 넣음 
+>{}는 response.data 됨
+
+
+
+
+

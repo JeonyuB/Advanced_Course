@@ -1,0 +1,71 @@
+react 특징: 싱글페이지
+장점: 관련 정보 한번에 보기 쉬움
+단점: 트리구조여야하기 떄문에 한번에 데이터 한번에 받기 어려움
+>약점 보안: useContext( redux, ORM(object relation model) )
+
+
+redux: 갖가지 하위 컨포넌트들을 main.jsx로 감싸 데이터를 한데 할당하는 것
+
+redux의 두가지 구성요소: action(function)과 state(data)
+<<redux는 자바의 클래스같은거. 명칭만 다르다고 생각하면 됨. 
+
+usedispatch를 통해 인수를 action에 삽입
+
+<context 관련 중심>
+import InfoTable from "./InfoTable.jsx";
+> InfoTable는 변수며ㅕㅇ으로 받음
+>변수명이므로 이름 바꿔도 됨
+import {InfoTable} from "./InfoTable.jsx";
+> {InfoTable}는 object로 받음(원본쪽에서 export했을 때)
+> {}안의 object명은 바꾸면 안됨
+
+
+mvt 모델
+쟝고의 view=control
+
+
+
+
+설치:
+DataGrip, pyCharm 1.1.1 
+
+
+파이썬 콘솔 및 설정
+pip install djangorestframework django-cors-headers
+pip install django~=4.0
+django-admin startproject config .
+python manage.py makemigrations
+python .\manage.py migrate
+
+setting.py에서
+
+LANGUAGE_CODE = 'ko-kr'
+
+TIME_ZONE = 'Asia/Seoul'
+
+USE_I18N = False
+
+USE_TZ = False
+ALLOWED_HOSTS = ["*"]
+
+INSTALLED_APPS = []에서 콘솔에서 app 추가
+
+models.py에  from django.db import models
+
+# Create your models here.
+
+
+
+# Create your views here.
+
+class Employee(models.Model):
+    name = models.CharField(max_length=100)
+    age = models.IntegerField()
+    job = models.CharField(max_length=100)
+    language = models.CharField(max_length=100)
+    payment = models.IntegerField()
+
+    class Meta:
+        db_table = 'employee'
+    def __str__(self):
+        return self.name 추가

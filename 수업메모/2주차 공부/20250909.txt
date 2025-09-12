@@ -1,0 +1,231 @@
+주된 학습: mongoDB
+
+기존	mongoDB
+ table = collection
+
+
+흐름:
+mongoDB => 쟝고 => use mydb
+
+
+mongodb 설치
+>try판 설치
+>환경 변수에 mongoDB bin 위치 저장
+
+==============================
+몽고DB 기본문법
+
+use mydb; //사용
+
+db.createCollection("employees"); // 생성
+db.createCollection("employees", {
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            required: ["name", "age", "job", "language", "pay"],
+            properties: {
+                name: {bsonType: "string"},
+                age: {bsonType: ['int', 'long', 'double', 'decimal']},
+                job: {bsonType: "string"},
+                language: {bsonType: "string"},
+                pay: {bsonType: ['int', 'long', 'double', 'decimal']},
+            }
+        }
+    }
+});//생성(컬럼까지)
+    
+db.employees.drop(); //삭제
+
+db.employees.insertMany()//추가(다수)
+
+db.employees.insertOne()//추가(하나)
+
+예시: 
+db.employees.insertMany(
+    [
+        {name:"John", age: 37, job: "frontend", language: "React", pay: 450},
+        {name:"Jack", age: 30, job: "backend", language: "java", pay: 400},
+        {name:"Sue", age: 32, job: "backend", language: "python", pay: 380},
+        {name:"Susan", age: 27, job: "frontend", language: "javascript", pay: 500}
+    ]
+);
+
+
+db.employees.find({name: "Jack"}, {_id: 0, job: 1, language:1}); // select
+db.employees.find({$or: [{age: 37}, {pay: 400}]}, {_id: 0, job: 1, language:1}); // where 절 포함
+db.employees.find({$and: [{age:{$gt: 30}}, {pay: 450}]}, {_id: 0, job: 1, language:1}); // 대소크기비교
+db.employees.find({$or: [{age: 37}, {pay: 400}]}, {_id: 0, job: 1, language:1}).sort({name: -1}).limit(2); // ACE, DESC 기능
+db.employees.updateOne({name: "Jack"}, {$set:{age: 29}})// update 구문
+db.employees.deleteOne({name: "Jack"});// 삭제 구문
+===================================
+object에 저장되는 형태.(db.employees.insertMany 형태에서 알수 있음)
+
+
+// 첫번째 인수: query, condition where 절
+// 두번째 인수: projection select ... from
+=======================================
+기존(posrtgreSQL) 데이터 세팅
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",   # PostgreSQL 엔진
+        "NAME": "postgres",                      # 데이터베이스 이름
+        "USER": "postgres",                      # DB 사용자
+        "PASSWORD": "0000",                 # 비밀번호
+        "HOST": "localhost",                         # DB 서버 주소 (원격이면 IP/도메인)
+        "PORT": "5432",                              # 기본 포트
+    }
+}
+========================================
+
+mongoDB 데이터 세팅
+<사전 데이터베이스 세팅>
+use admin
+
+1) 유저 설정
+
+//사용자를 admin에 등록
+use admin
+db.createUser({
+        user: "je",
+        pwd: "1111",
+        roles: [ { role: "userAdminAnyDatabase", db: "admin" } ]
+})
+
+//사용자를 mydb에 권한을 줌
+use mydb
+db.createUser({
+        user: "je",
+        pwd: "1111",
+        roles: [ { role: "dbAdmin", db: "mydb" } ]
+ })
+
+2) 테이블 설정
+db.createCollection("employee", {
+    validator:{
+        $jsonSchema:{
+            bsonType: "object",
+            required: ["name", "age", "job", "language", "pay"],
+            properties: {
+                name: {bsonType: "string"},
+                age: {bsonType: ['int', 'long', 'double', 'decimal']},
+                job: {bsonType: "string"},
+                language: {bsonType: "string"},
+                pay: {bsonType: ['int', 'long', 'double', 'decimal']},
+            }
+        }
+    }
+});
+
+3) 테이블 데이터 설정
+db.employee.insertMany(
+    [
+        {name:"John", age: 37, job: "frontend", language: "React", pay: 450},
+        {name:"Jack", age: 30, job: "backend", language: "java", pay: 400},
+        {name:"Sue", age: 32, job: "backend", language: "python", pay: 380},
+        {name:"Susan", age: 27, job: "frontend", language: "javascript", pay: 500}
+    ]
+);
+
+
+----------------------------------------------------
+
+<model.py 설정>
+from django.db import models
+
+# Create your models here.
+
+
+
+# Create your views here.
+
+class Employee(models.Model):
+    name = models.CharField("이름",max_length=100)
+    age = models.IntegerField("나이")
+    job = models.CharField("직업",max_length=100)
+    language = models.CharField("언어",max_length=100)
+    pay = models.IntegerField("급여")
+    created_at = models.DateTimeField("등록일", auto_now_add=True)
+    updated_at = models.DateTimeField("수정일", auto_now=True)
+
+    class Meta:
+        db_table = 'employee'
+        ordering = ["-created_at"]
+        verbose_name = "직원"
+        verbose_name_plural = "직원 목록"
+    def __str__(self):
+        return f"{self.name} ({self.job}, {self.language})"
+        # return self.name
+
+<settings.py 설정>
+DATABASES 수정하기
+
+DATABASES = {
+    "default": {
+        "ENGINE": "djongo",
+        "NAME": "mydb",                  # DB 이름
+        "CLIENT": {
+            "host": "localhost",
+            "port": 27017,
+            "username": "je",
+            "password": "1111",
+            "authSource": "admin",       # 계정 만든 DB (보통 admin)
+        },
+    }
+}
+
+<migrations 설정>
+0001_initial.py 삭제 후, 새로 python manage.py makemigrations 함
+> python manage.py migrate
+
+<DB에서 확인>
+mydb 폴더 내 컬렉션 폴더 내 컬럼(테이블) 개수가 12개 되면 성공
+--------------------------------------------------------------
+<webstorm에서 employeeApi.js>
+
+const url = "http://localhost:8000/app/emp" // 8000: 파이썬 백주소 로 변경
+
+<최종>
+백과 프론트 서버를 켜고, 데이터가 잘 출력되는지 확인 
+
+
+
+========================================
+redis
+
+redis 설치 후 DG에서 실행. 
+
+<기본 문법>
+SET name "John"
+get name
+
+lpush fruits "apple"
+rpush fruits "banana"
+lrange fruits 0 -1
+
+hset employees name "John"
+hset employees age 30
+hset employees job "fornted"
+hset employees language "Python"
+hset employees pay 400
+
+hget employees age
+
+<<더 높은 버전용
+# 직원 John
+hset employees:1n name "John" age 37 job "frontend" language "React" pay 450
+
+# 직원 Jack
+hset employees:2 name "Jack" age 30 job "backend" language "Java" pay 400
+
+# 직원 Sue
+hset employees:3 name "Sue" age 32 job "backend" language "Python" pay 380
+
+# 직원 Susan
+hset employees:4 name "Susan" age 27 job "frontend" language "JavaScript" pay 500
+
+============
+radis-python 설치
+
+pip install psycopg2-binary
+pip install redis     
+

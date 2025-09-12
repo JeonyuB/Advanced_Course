@@ -1,0 +1,22 @@
+webstorm , intelij 설치>node.js 설치 필수
+
+
+리액트 복습부분(4가지)
+useState, useEffect, useReducer, use어쩌고
+
+연습할 이벤트
+onclick
+onsubmit
+onchange
+useeffect(state,pops)
+
+
+
+
+
+
+잠깨기용 메모
+1. 소문은 들어 알고있을듯
+2, 꿈속에서 발견하 열쇠. 그것은 자신의 능력의 개화를 의미한다.
+열쇠를 쥔 채 꿈속을 헤메는 소녀. 
+3.
