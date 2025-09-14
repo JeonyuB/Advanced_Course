@@ -1,6 +1,31 @@
 docker rm -f $(docker ps -aq) : 프로세스 전체적으로 죽이기
 docker rmi -f $(docker ps -aq) : 이미지 죽이기
 
-
+docker-compose up -d :도커 올리기(실행)
+docker-compose down: 도커 내리지(죽임)
 
 해야하는 것: java를 통해 redis DB로 데이터 연결. 서버 열기까지.
+
+===============================
+
+도커 컨테이너 정리 순서 (전체적으로)
+
+.env 파일 만들기
+
+docker-compose up -d 실행
+
+docker ps로 3개 컨테이너 다 올라왔는지 확인
+
+AWS 보안 그룹에서 포트 27017, 80 열려 있는지 확인
+
+DataGrip 또는 Postman 등으로 연결 테스트
+===============================
+
+주의 사항
+1) DG(datagrip)먼저 시작하면 연결 안됨
+> aws로 서버 열기
+> putty로 dockercontainer 생성 후 서버 연결
+
+
+
+

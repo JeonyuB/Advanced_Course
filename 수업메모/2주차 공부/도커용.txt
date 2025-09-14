@@ -35,7 +35,7 @@ $docker run -d \
   --name my-postgres \
   -p 5432:5432 \
   -e POSTGRES_DB=mydb \
-  -e POSTGRES_USER=je \
+  -e POSTGRES_USER=mykey \
   -e POSTGRES_PASSWORD=1111 \
   -v pgdata:/var/lib/postgresql/data \
   my-postgres:14

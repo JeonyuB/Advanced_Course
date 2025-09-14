@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  # 1) MongoDB
+  db:
+    image: mongo:6
+    container_name: my-mongod
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_INITDB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE}
+    volumes:
+      - mongodata:/data/db
+    ports:
+      - "27017:27017"   # ← 추가
+
+  # 2) Django 백엔드
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: my_backend_app
+    restart: unless-stopped
+    env_file:
+      - ./.env
+    environment:
+      MONGO_URL: mongodb://${MONGO_INITDB_ROOT_USERNAME}:${MONGO_INITDB_ROOT_PASSWORD}@db:27017/${MONGO_INITDB_DATABASE}?authSource=admin
+    depends_on:
+      - db
+    expose:
+      - "8000"
+
+  # 3) 프론트엔드 (정적 + Nginx 리버스프록시)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: my_frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mongodata:
