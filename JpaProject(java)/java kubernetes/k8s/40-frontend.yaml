@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend
+  namespace: project-young
+spec:
+  selector: { app: frontend }
+  ports:
+    - port: 80
+      targetPort: 80
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: project-young
+spec:
+  replicas: 3   # ✅ 레플리카 3대
+  selector:
+    matchLabels: { app: frontend }
+  template:
+    metadata:
+      labels: { app: frontend }
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/<org>/project-young-frontend:1.0.0
+          ports:
+            - containerPort: 80
+          # 헬스체크(probe) 없음: 요청하신 대로 제외

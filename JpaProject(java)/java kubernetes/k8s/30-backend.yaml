@@ -1,0 +1,37 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: project-young #프로젝트명
+spec:
+  selector: { app: backend }
+  ports:
+    - port: 8080
+      targetPort: 8080
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: project-young
+spec:
+  replicas: 3   # ✅ 레플리카 3대
+  selector:
+    matchLabels: { app: backend }
+  template:
+    metadata:
+      labels: { app: backend }
+    spec:
+      containers:
+        - name: app
+          image: ghcr.io/<org>/project-young-backend:1.0.0
+          ports:
+            - containerPort: 8080
+          env:
+            - name: DB_URL
+              valueFrom: { configMapKeyRef: { name: app-config, key: DB_URL } }
+            - name: DB_USERNAME
+              valueFrom: { secretKeyRef: { name: db-credentials, key: DB_USERNAME } }
+            - name: DB_PASSWORD
+              valueFrom: { secretKeyRef: { name: db-credentials, key: DB_PASSWORD } }

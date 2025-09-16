@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  # 1. PostgreSQL 데이터베이스 서비스
+  db:
+    image: postgres:15-alpine
+    container_name: my_postgres_db
+    restart: always
+    env_file:
+      - ./.env  # ❗ .env 파일에서 환경 변수를 불러옵니다.
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. JPA (Spring Boot) 백엔드 서비스
+  backend:
+    build: ./backend
+    container_name: my_backend_app
+    restart: always
+    depends_on:
+      - db
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env  # ❗ .env 파일에서 환경 변수를 불러옵니다.
+
+  # 3. React 프론트엔드 서비스
+  frontend:
+    build: ./frontend
+    container_name: my_frontend_app
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "80:80"
+
+# 데이터베이스 데이터를 영속적으로 저장하기 위한 Docker 볼륨 정의
+volumes:
+  postgres_data:

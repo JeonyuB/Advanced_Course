@@ -1,0 +1,68 @@
+새 프로젝트
+생성기: vite
+vite(V): npx create-vite(그대로)
+템플릿: react
+
+
+==============================
+터미널: npm install react-router-dom
+(잘 깔렸는지는 package.json에서 확인 가능)
+
+===============================
+<main.jsx 세팅>
+
+import {BrowserRouter} from "react-router-dom";
+후에 
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>, 로 감쌈.(이래야 페이지 이동 가능)
+
+============여기까지 기본세팅=============
+
+<App.jsx 세팅>
+import './App.css'
+import {Routes, Route} from "react-router-dom";
+import Product from "./components/Product.jsx";
+
+function App() {
+
+  return (
+    <Routes>
+        <Route path="/url 링크 지정명" element={<컴포넌트파일명/>} />
+    </Routes>
+  )
+}
+
+export default App
+
+
+=================================
+
+
+이동할 페이지를 세팅하는 법(이동하게끔 하는 코드()
+
+1) 메인페이지(홈페이지)에서 <Link to="/product">상품</Link> 이런 식으로 이동 링크 달아둠.(a태그랑 같은 기능)
+
+2) App.jsx에서 <Route path="/" element={<MainPage />} />를 추가.
+
+=============================
+한페이지이동이 아닌, 두페이지 이동일 경우.
+
+index.html에서 body태그 안에
+<div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <div id="app"></div>
+    <script type="module" src="/src/app.jsx"></script> 이런식으로 페이지를 늘릴 수 있음.
+
+단, main.jsx에서 createRoot(document.getElementById('root')).render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+) 의 document.getElementById('root') 부분을 
+document.getElementById('app')으로 바꿔줘야함.
+
+
+
+
+
+

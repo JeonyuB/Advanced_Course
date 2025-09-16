@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import aioredis
 import logging
-from settings import settings
+from config.settings import settings
 
 app = FastAPI(debug=settings.DEBUG)
 

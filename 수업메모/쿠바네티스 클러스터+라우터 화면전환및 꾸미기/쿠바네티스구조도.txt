@@ -1,0 +1,30 @@
+project/
+├── backend/                  # Java(Spring Boot) 백엔드
+│   ├── src/                  # 자바 소스코드
+│   │   ├── main/java/com/example/app
+│   │   └── main/resources
+│   ├── pom.xml               # Maven 빌드 설정 (또는 build.gradle)
+│   └── Dockerfile            # 백엔드용 도커파일
+│
+├── frontend/                 # React 프론트엔드
+│   ├── public/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── redux/
+│   │   └── emp/
+│   ├── package.json
+│   └── Dockerfile            # 프론트엔드용 도커파일
+│
+├── db/                       # 데이터베이스 초기화 스크립트
+│   └── init.sql
+│
+├── k8s/                      # 쿠버네티스 매니페스트 모음
+│   ├── 00-namespace.yaml
+│   ├── 01-secret.yaml
+│   ├── 10-postgres.yaml
+│   ├── 20-backend.yaml
+│   ├── 30-frontend.yaml
+│   └── 40-ingress.yaml       # (선택) ALB 인그레스
+│
+└── README.md                 # 배포/개발 가이드

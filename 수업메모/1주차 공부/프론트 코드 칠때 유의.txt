@@ -1,0 +1,22 @@
+1. 기능이 아예 작동을 안할ㄲ떈
+
+const { totalRevenue, totalProfit, transactionCount, customerCount } = useSelector(
+        (state) =>{
+            console.log(state)
+            return state.dashboard
+        }
+    );
+
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log(totalRevenue)
+        dispatch(fetchGetData());
+    },[dispatch]);
+.
+.
+.
+이런 식으로 만들어둔 컴포넌트에서 useEffect를 이용해 생성한 api및 slice를 실행해야 기능이 작동한다.
+
+==================================
+

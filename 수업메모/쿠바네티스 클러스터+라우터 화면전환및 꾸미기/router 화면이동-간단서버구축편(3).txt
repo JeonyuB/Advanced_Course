@@ -1,0 +1,11 @@
+1) 프로젝트 바로 하위에 server 폴더 만들기.
+
+2) server 폴더 안에 db.json, package.json 넣기
+
+3) server로 이동.
+
+4) json-server --watch db.json --port 3001 로 시작.(package.json의 start에 써져있음.)
+
+5) 안될시, npm install -g json-server로 json을 global로 깔고 다시 4번 실행.
+
+6) 링크 타고 들어가면 json에 들어가는 것 확인가능

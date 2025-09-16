@@ -1,0 +1,88 @@
+﻿aws Amazon Elastic Kubernetes Service의 콘솔에서 해당 사항 실행하기.
+
+1. curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
+
+
+2. sudo mv /tmp/eksctl /usr/local/bin
+
+
+3. eksctl version
+
+
+4. 클러스트 만들기
+eksctl create cluster \
+  --name kogo-demo \
+  --region ap-northeast-2 \
+  --node-type t3.medium \
+  --nodes 2 \
+  --ssh-access \
+  --ssh-public-key je \<<만든 key이름임.
+  --managed
+
+
+설치가 끝나면 확인하기
+kubectl get nodes
+
+// 이때 EC2로 가면 서버가 2개 존재하게 됨.
+
+압축
+tar -czvf react-app.tar.gz dist Dockerfile
+압축 해제
+tar -xzvf react-app.tar.gz
+
+
+docker build -t kogo3039/react-app:v1.0 .
+
+
+docker login
+username:cath990409@gmail.com(도커이메일 or 도커 닉네임)
+pw: *********
+
+//로그인이 되어야 도커 이미지를 받아올수 있음
+
+docker push kogo3039/react-app:v1.0
+
+//.yaml파일 실행
+kubectl apply -f deployment.yaml
+kubectl apply -f service.yaml
+
+
+// 실행
+kubectl get pods
+kubectl get svc
+
+
+
+//클러스터 삭제
+eksctl delete cluster --name=kogo-demo --region=ap-northeast-2
+
+
+eksctl create cluster --name=kogo-demo --region ap-northeast-2 --node-type t3.medium --nodes 2 --node-volume-size 20 --with-oidc
+
+
+저장소 만들기
+aws ecr create-repository --repository-name fastapi-backend
+354918396824.dkr.ecr.ap-northeast-2.amazonaws.com/fastapi-backend
+
+
+aws ecr create-repository --repository-name react-frontend
+354918396824.dkr.ecr.ap-northeast-2.amazonaws.com/react-frontend
+
+
+
+
+aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin 354918396824.dkr.ecr.ap-northeast-2.amazonaws.com
+
+
+docker build -t 354918396824.dkr.ecr.ap-northeast-2.amazonaws.com/fastapi-backend:latest ./backend
+
+
+docker push 354918396824.dkr.ecr.ap-northeast-2.amazonaws.com/fastapi-backend:latest
+
+
+
+
+docker build -t 354918396824.dkr.ecr.ap-northeast-2.amazonaws.com/react-frontend:latest ./frontend
+
+
+docker push 354918396824.dkr.ecr.ap-northeast-2.amazonaws.com/react-frontend:latest
