@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
 import { Modal, Input, Button, Select } from 'antd';
 import { useDispatch } from 'react-redux';
-import { Modal, Input, Button, Select, DatePicker } from 'antd';
 
 // import { createSale } from '../redux/slices/salePostSlice';
 
-const 지역목록 = [
-  { 지역코드: 11110, 시도: '서울특별시', 구군시: '종로구' },
-  { 지역코드: 11140, 시도: '서울특별시', 구군시: '중구' },
-  { 지역코드: 26110, 시도: '부산광역시', 구군시: '중구' },
-  { 지역코드: 26140, 시도: '부산광역시', 구군시: '서구' },
-  // ... 나머지 지역 데이터 추가
-];
+// const 지역목록 = [
+//   { 지역코드: 11110, 시도: '서울특별시', 구군시: '종로구' },
+//   { 지역코드: 11140, 시도: '서울특별시', 구군시: '중구' },
+//   { 지역코드: 26110, 시도: '부산광역시', 구군시: '중구' },
+//   { 지역코드: 26140, 시도: '부산광역시', 구군시: '서구' },
+//   // ... 나머지 지역 데이터 추가
+// ];
 
 const SaleModal = ({ open, onCancel }) => {
   const dispatch = useDispatch();
@@ -32,11 +31,11 @@ const SaleModal = ({ open, onCancel }) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   };
 
-  const handleSidoChange = (sido) => {
-    const region = 지역목록.find((r) => r.시도 === sido);
-    const 지역코드 = region ? region.지역코드 : '';
-    setForm((prev) => ({ ...prev, 시도: sido, 지역코드 }));
-  };
+  // const handleSidoChange = (sido) => {
+  //   const region = 지역목록.find((r) => r.시도 === sido);
+  //   const 지역코드 = region ? region.지역코드 : '';
+  //   setForm((prev) => ({ ...prev, 시도: sido, 지역코드 }));
+  // };
 
   const handleSubmit = () => {
     const preparedData = {
@@ -64,15 +63,7 @@ const SaleModal = ({ open, onCancel }) => {
         <div className="title" style={{ fontSize: 16, fontWeight: 'bold' }}>{title}</div>
       </div>
       <div style={{ display: 'flex', gap: 20, marginBottom: 8 }}>
-          <div>
-              <label style={labelStyle}>날짜</label>
-              <DatePicker
-                  style={inputStyle}
-                  value={form.날짜 ? dayjs(form.날짜) : null}
-                  onChange={(date, dateString) => handleChange('날짜', dateString)}
-                  format="YYYY-MM-DD"
-              />
-          </div>
+        <div><label style={labelStyle}>날짜</label><Input style={inputStyle} value={form.날짜} onChange={(e) => handleChange('날짜', e.target.value)} /></div>
         <div><label style={labelStyle}>수량</label><Input style={inputStyle} value={form.수량} onChange={(e) => handleChange('수량', e.target.value)} /></div>
         <div><label style={labelStyle}>단가</label><Input style={inputStyle} value={form.단가} onChange={(e) => handleChange('단가', e.target.value)} /></div>
         <div>

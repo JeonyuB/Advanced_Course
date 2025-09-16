@@ -39,7 +39,7 @@ function SalesPage() {
     return (
         <>
         <div style={{display:"flex", justifyContent: "flex-end", paddingBottom:"10px"}}>
-            <Button type="primary" onClick={() => setIsModalOpen(true)}>판매등록</Button>
+            <Button type="primary" onClick={() => setIsModalOpen(false)}>판매등록</Button>
         </div>
         <SaleModal open={isModalOpen} onCancel={() => setIsModalOpen(false)}/>
         <div className="ag-theme-alpine" style={{width: '100%', height: '70vh'}}>
