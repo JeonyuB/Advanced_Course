@@ -1,0 +1,71 @@
+기본> 데이터가 날아오는 형태: 객체 or 리스트
+
+pandas는 테이블 형태에 정형화 되어있음
+
+table = 릴레이션 = entity = DataFrame(pandas의 테이블명)
+
+DataFrame의 기본 형태 :
+[
+    [ ]
+    [ ]
+    [ ]
+     ...
+]
+
+카디널리티: 테이블의 관계개수(1:1, 1:n, n:m). 보통 n:m관계를 1:n 관계로 만들기 위한, 테이블 간의 관계를 의미.
+
+정규화: 데이터베이스에서 테이블을 쪼갠 형태
+>>테이블이 여러개다 = 테이블이 쪼개져있다 = 정규화되어 있다(nomalization)
+
+정규화의 이유: null값, 중복 처리(resorce를 줄이기 위함)
+
+정규화 단점: select가 어려움(join을 해야함< 반정규화)
+>>join =merge=병합
+
+
+실무에서 join해서 병합한 view(가상 테이블)을 만들어둬야함.
+
+key값이 없으면 컬럼이 없음(차원이 없음)
+
+기본기:
+if __name__=="__main__":
+    iris = load_iris()
+    print(iris) //
+    print(iris.keys()) //iris의 키값을 출력
+    print(iris['data']) //
+   print(iris['feature_names'])//컬럼 출력
+
+   df = pd.DataFrame(iris['data']) //테이블 구조로 만들어줌.
+
+    df = pd.DataFrame(iris['data']) //
+    df.columns = iris.feature_names//
+
+    print(iris.target_names)
+    print(iris.target)
+
+   print(df.cov().values)// 공분산 출력( 가장 큰 값이 가장 데이터가 다양하다는 뜻)
+   print(df.corr().values)// 상관계수 출력(기준이 1임)
+
+# 피벗테이블 출력 시, 두 값을 비교했을때 양의 관계일 경우 관계가 있다는 뜻. 음의 관계일 경우 관계가 거의 없다는 뜻.
+
+
+=======================================================
+실습한 것: merge_practice
+-테이블 병합(merge)하는 작업: 분석하기 위해 만들음.
+
+
+projection: for문을 대신할수 있다.
+
+fancy indexing이란?
+df['국어']>=90
+
+df[]와 df.loc[]가 있다.(차이점 및 정의 알기)
+df[]: 열읽기
+df.loc[]: 행과 열읽기(ex. df.loc[0:10, "39": 국어])
+
+
+
+
+
+
+   
