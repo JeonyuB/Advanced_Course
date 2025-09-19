@@ -14,10 +14,10 @@ if __name__ == '__main__':
     print(df.cov().values) #선형대수
     print(df.shape)
     mean = df.mean()
-    print(mean) #아무 명령 없을 경우, axis가 2개(출력격ㄹ과가 2개 나옴)= axis가 0일 경우랑 같음
+    print(mean) #아무 명령 없을 경우, axis가 2개(출력격과가 2개 나옴)= axis가 0일 경우랑 같음
     tmp = df-mean
     #exit()
-    #
+
 
     #고유값 및 고유벡터 구하기
     cov_matrix= tmp.cov().values #공분산

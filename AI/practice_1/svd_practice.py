@@ -1,29 +1,7 @@
 import numpy as np
 import pandas as pd
-from numpy.ma.extras import mask_cols
 from scipy.linalg import svd
 
-def ratings_table():
-    df = pd.read_pickle('./data/ratings.pkl')
-    #
-    users = df['cust_id'].value_counts().reset_index().iloc[:100]
-    # print(users[users["cust_id"]==71420])
-
-    # movies = df['movie_id'].value_counts().reset_index().iloc[:]
-
-    df_custId_100 = df[df['cust_id'].isin(users['cust_id'])]
-    pivoted_table = df_custId_100.pivot_table(
-        columns='movie_id',
-        index='cust_id',
-        values='rating'
-    )
-    row=pivoted_table.loc[71420]
-    mask_cols=row.isnull() #그 행에서 NaN인 컬럼 위치
-    null_cols=mask_cols[mask_cols].index.tolist()
-
-    means = pivoted_table.mean(axis=0)
-    pivoted_table.fillna(means, inplace=True)
-    return pivoted_table, null_cols
 
 if __name__=="__main__":
     # columns = ['cust_id', 'movie_id', 'rating', 'timestamp']
