@@ -1,8 +1,13 @@
 pip install pandas scikit-learn matplotlib transformers
 pip install openpyxl
+pip install matplotlib
+pip install seaborn  
 
------ 4. 한글 폰트 (macOS) -----
+
+# ----- 4. 한글 폰트 (macOS) -----
     font_path = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
     fm.FontProperties(fname=font_path)
     plt.rc('font', family='AppleGothic')
     plt.rcParams['axes.unicode_minus'] = False
+
+자연어만 임베딩 가능
