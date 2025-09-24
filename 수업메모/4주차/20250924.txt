@@ -1,0 +1,8 @@
+pip install pandas scikit-learn matplotlib transformers
+pip install openpyxl
+
+----- 4. 한글 폰트 (macOS) -----
+    font_path = '/System/Library/Fonts/Supplemental/AppleGothic.ttf'
+    fm.FontProperties(fname=font_path)
+    plt.rc('font', family='AppleGothic')
+    plt.rcParams['axes.unicode_minus'] = False
